@@ -42,11 +42,16 @@ abstract class _FormStore with Store {
   bool success = false;
 
   @observable
+  String route = '';
+
+  @observable
   bool loading = false;
 
   @computed
   bool get canLogin =>
-      !formErrorStore.hasErrorsInLogin && userEmail.isNotEmpty && password.isNotEmpty;
+      !formErrorStore.hasErrorsInLogin &&
+      userEmail.isNotEmpty &&
+      password.isNotEmpty;
 
   @computed
   bool get canRegister =>
@@ -120,6 +125,7 @@ abstract class _FormStore with Store {
     Future.delayed(Duration(milliseconds: 2000)).then((future) {
       loading = false;
       success = true;
+      route = 'login';
     }).catchError((e) {
       loading = false;
       success = false;
@@ -133,6 +139,18 @@ abstract class _FormStore with Store {
   @action
   Future forgotPassword() async {
     loading = true;
+    Future.delayed(Duration(milliseconds: 2000)).then((future) {
+      loading = false;
+      success = true;
+      route = 'forgot';
+    }).catchError((e) {
+      loading = false;
+      success = false;
+      errorStore.errorMessage = e.toString().contains("ERROR_USER_NOT_FOUND")
+          ? "Username and password doesn't match"
+          : "Something went wrong, please check your internet connection and try again";
+      print(e);
+    });
   }
 
   @action

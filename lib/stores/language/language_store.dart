@@ -24,8 +24,7 @@ abstract class _LanguageStore with Store {
   ];
 
   // constructor:---------------------------------------------------------------
-  _LanguageStore(Repository repository)
-      : this._repository = repository {
+  _LanguageStore(Repository repository) : this._repository = repository {
     init();
   }
 
@@ -70,7 +69,7 @@ abstract class _LanguageStore with Store {
   // general:-------------------------------------------------------------------
   void init() async {
     // getting current language from shared preference
-    if(_repository.currentLanguage != null) {
+    if (_repository.currentLanguage != null) {
       _locale = _repository.currentLanguage!;
     }
   }

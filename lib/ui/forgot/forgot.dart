@@ -16,12 +16,12 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginScreen extends StatefulWidget {
+class ForgotScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _ForgotScreenState createState() => _ForgotScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ForgotScreenState extends State<ForgotScreen> {
   //text controllers:-----------------------------------------------------------
   TextEditingController _userEmailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Observer(
             builder: (context) {
               return _store.success
-                  ? navigate(context, _store.route)
+                  ? navigate(context)
                   : _showErrorMessage(_store.errorStore.errorMessage);
             },
           ),
@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            AppIconWidget(image: 'assets/icons/ic_appicon.png'),
+            // AppIconWidget(image: 'assets/icons/ic_appicon.png'),
             SizedBox(height: 24.0),
             _buildUserIdField(),
             _buildPasswordField(),
@@ -211,28 +211,15 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget navigate(BuildContext context, route) {
+  Widget navigate(BuildContext context) {
     SharedPreferences.getInstance().then((prefs) {
-      if (route == 'login') {
-        debugPrint('abc');
-        prefs.setBool(Preferences.is_logged_in, false);
-        Future.delayed(Duration(milliseconds: 0), () {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              Routes.home, (Route<dynamic> route) => false);
-        });
-      } else {
-        prefs.setBool(Preferences.is_forgot, true);
-        Future.delayed(Duration(milliseconds: 0), () {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              Routes.forgot, (Route<dynamic> route) => false);
-        });
-      }
+      prefs.setBool(Preferences.is_logged_in, false);
     });
 
-    Future.delayed(Duration(milliseconds: 0), () {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.home, (Route<dynamic> route) => false);
-    });
+    // Future.delayed(Duration(milliseconds: 0), () {
+    //   Navigator.of(context).pushNamedAndRemoveUntil(
+    //       Routes.home, (Route<dynamic> route) => false);
+    // });
 
     return Container();
   }
