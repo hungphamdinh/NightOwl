@@ -1,5 +1,6 @@
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/constants/assets.dart';
+import 'package:boilerplate/constants/language/index.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:boilerplate/stores/form/form_store.dart';
@@ -132,6 +133,7 @@ class _ForgotScreenState extends State<ForgotScreen> {
           hint: AppLocalizations.of(context).translate('login_et_user_email'),
           inputType: TextInputType.emailAddress,
           icon: Icons.person,
+          label: Languages.password,
           iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,
           textController: _userEmailController,
           inputAction: TextInputAction.next,
@@ -155,6 +157,7 @@ class _ForgotScreenState extends State<ForgotScreen> {
           hint:
               AppLocalizations.of(context).translate('login_et_user_password'),
           isObscure: true,
+          label: Languages.password,
           padding: EdgeInsets.only(top: 16.0),
           icon: Icons.lock,
           iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,

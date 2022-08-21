@@ -1,3 +1,5 @@
+import 'package:boilerplate/constants/colors.dart';
+import 'package:boilerplate/constants/language/index.dart';
 import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatelessWidget {
@@ -16,6 +18,7 @@ class TextFieldWidget extends StatelessWidget {
   final ValueChanged? onChanged;
   final bool autoFocus;
   final TextInputAction? inputAction;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +37,15 @@ class TextFieldWidget extends StatelessWidget {
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
             hintText: this.hint,
-            hintStyle:
-                Theme.of(context).textTheme.bodyText1!.copyWith(color: hintColor),
+            labelText: label,
+            hintStyle: Theme.of(context)
+                .textTheme
+                .bodyText1!
+                .copyWith(color: AppColors.textSemiGray.hexToColor()),
             errorText: errorText,
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: AppColors.azure.hexToColor()),
+            ),
             counterText: '',
             icon: this.isIcon ? Icon(this.icon, color: iconColor) : null),
       ),
@@ -46,7 +55,7 @@ class TextFieldWidget extends StatelessWidget {
   const TextFieldWidget({
     Key? key,
     required this.icon,
-    required this.errorText,
+    this.errorText,
     required this.textController,
     this.inputType,
     this.hint,
@@ -60,6 +69,6 @@ class TextFieldWidget extends StatelessWidget {
     this.onChanged,
     this.autoFocus = false,
     this.inputAction,
+    required this.label,
   }) : super(key: key);
-
 }

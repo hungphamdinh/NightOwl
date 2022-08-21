@@ -1,5 +1,7 @@
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/constants/assets.dart';
+import 'package:boilerplate/constants/colors.dart';
+import 'package:boilerplate/constants/language/index.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:boilerplate/stores/form/form_store.dart';
@@ -13,6 +15,7 @@ import 'package:boilerplate/widgets/rounded_button_widget.dart';
 import 'package:boilerplate/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,7 +28,14 @@ class _LoginScreenState extends State<LoginScreen> {
   //text controllers:-----------------------------------------------------------
   TextEditingController _userEmailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    // Optional clientId
+    // clientId: '479882132969-9i9aqik3jfjd7qhci1nqf0bm2g71rm1u.apps.googleusercontent.com',
+    scopes: <String>[
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
   //stores:---------------------------------------------------------------------
   late ThemeStore _themeStore;
 
@@ -113,7 +123,6 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            AppIconWidget(image: 'assets/icons/ic_appicon.png'),
             SizedBox(height: 24.0),
             _buildUserIdField(),
             _buildPasswordField(),
@@ -132,6 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
           hint: AppLocalizations.of(context).translate('login_et_user_email'),
           inputType: TextInputType.emailAddress,
           icon: Icons.person,
+          label: Languages.email,
           iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,
           textController: _userEmailController,
           inputAction: TextInputAction.next,
@@ -155,6 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
           hint:
               AppLocalizations.of(context).translate('login_et_user_password'),
           isObscure: true,
+          label: Languages.password,
           padding: EdgeInsets.only(top: 16.0),
           icon: Icons.lock,
           iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,
@@ -181,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
           style: Theme.of(context)
               .textTheme
               .caption
-              ?.copyWith(color: Colors.orangeAccent),
+              ?.copyWith(color: AppColors.azure.hexToColor()),
         ),
         onPressed: () async {
           if (_store.canForgetPassword) {
@@ -199,11 +210,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return RoundedButtonWidget(
       buttonText: AppLocalizations.of(context).translate('login_btn_sign_in'),
       buttonColor: Colors.orangeAccent,
-      textColor: Colors.white,
+      textColor: AppColors.text.hexToColor(),
       onPressed: () async {
         if (_store.canLogin) {
           DeviceUtils.hideKeyboard(context);
-          _store.login();
+          try {
+            await _googleSignIn.signIn();
+          } catch (error) {
+            print(error);
+          }
+          // _store.login();
         } else {
           _showErrorMessage('Please fill in all fields');
         }
@@ -214,7 +230,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget navigate(BuildContext context, route) {
     SharedPreferences.getInstance().then((prefs) {
       if (route == 'login') {
-        debugPrint('abc');
         prefs.setBool(Preferences.is_logged_in, false);
         Future.delayed(Duration(milliseconds: 0), () {
           Navigator.of(context).pushNamedAndRemoveUntil(
