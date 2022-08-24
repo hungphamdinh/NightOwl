@@ -13,6 +13,7 @@ import 'package:boilerplate/widgets/empty_app_bar_widget.dart';
 import 'package:boilerplate/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/widgets/rounded_button_widget.dart';
 import 'package:boilerplate/widgets/textfield_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -38,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
   );
   //stores:---------------------------------------------------------------------
   late ThemeStore _themeStore;
+  String userEmail = "";
 
   //focus node:-----------------------------------------------------------------
   late FocusNode _passwordFocusNode;
@@ -215,7 +217,9 @@ class _LoginScreenState extends State<LoginScreen> {
         if (_store.canLogin) {
           DeviceUtils.hideKeyboard(context);
           try {
-            await _googleSignIn.signIn();
+            // await _googleSignIn.signIn();
+            await signInWithGoogle();
+            _store.login();
           } catch (error) {
             print(error);
           }
@@ -267,6 +271,26 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     return SizedBox.shrink();
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    userEmail = googleUser.email;
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   // dispose:-------------------------------------------------------------------
