@@ -4,11 +4,11 @@ import 'package:mobx/mobx.dart';
 import '../../data/repository.dart';
 import '../form/form_store.dart';
 
-part 'user_store.g.dart';
+part 'auth_store.g.dart';
 
-class UserStore = _UserStore with _$UserStore;
+class AuthStore = _AuthStore with _$AuthStore;
 
-abstract class _UserStore with Store {
+abstract class _AuthStore with Store {
   // repository instance
   final Repository _repository;
 
@@ -22,7 +22,7 @@ abstract class _UserStore with Store {
   bool isLoggedIn = false;
 
   // constructor:---------------------------------------------------------------
-  _UserStore(Repository repository) : this._repository = repository {
+  _AuthStore(Repository repository) : this._repository = repository {
 
     // setting up disposers
     _setupDisposers();

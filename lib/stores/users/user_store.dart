@@ -1,15 +1,15 @@
 import 'package:boilerplate/data/repository.dart';
-import 'package:boilerplate/models/post/post_list.dart';
+import 'package:boilerplate/models/post/user_list.dart';
 import 'package:boilerplate/stores/error/error_store.dart';
 import 'package:boilerplate/utils/dio/dio_error_util.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
-part 'post_store.g.dart';
+part 'user_store.g.dart';
 
-class PostStore = _PostStore with _$PostStore;
+class UserStore = _UserStore with _$UserStore;
 
-abstract class _PostStore with Store {
+abstract class _UserStore with Store {
   // repository instance
   late Repository _repository;
 
@@ -17,18 +17,18 @@ abstract class _PostStore with Store {
   final ErrorStore errorStore = ErrorStore();
 
   // constructor:---------------------------------------------------------------
-  _PostStore(Repository repository) : this._repository = repository;
+  _UserStore(Repository repository) : this._repository = repository;
 
   // store variables:-----------------------------------------------------------
-  static ObservableFuture<PostList?> emptyPostResponse =
+  static ObservableFuture<UserList?> emptyPostResponse =
       ObservableFuture.value(null);
 
   @observable
-  ObservableFuture<PostList?> fetchPostsFuture =
-      ObservableFuture<PostList?>(emptyPostResponse);
+  ObservableFuture<UserList?> fetchPostsFuture =
+      ObservableFuture<UserList?>(emptyPostResponse);
 
   @observable
-  PostList? postList;
+  UserList? userList;
 
   @observable
   bool success = false;
@@ -38,12 +38,12 @@ abstract class _PostStore with Store {
 
   // actions:-------------------------------------------------------------------
   @action
-  Future getPosts() async {
-    final future = _repository.getPosts();
+  Future getUsers() async {
+    final future = _repository.getUsers();
     fetchPostsFuture = ObservableFuture(future);
 
     future.then((postList) {
-      this.postList = postList;
+      this.userList = postList;
     }).catchError((error) {
       errorStore.errorMessage = DioErrorUtil.handleError(error);
     });

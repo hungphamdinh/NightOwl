@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_store.dart';
+part of 'auth_store.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,15 +8,15 @@ part of 'user_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$UserStore on _UserStore, Store {
+mixin _$AuthStore on _AuthStore, Store {
   Computed<bool>? _$isLoadingComputed;
 
   @override
   bool get isLoading => (_$isLoadingComputed ??=
-          Computed<bool>(() => super.isLoading, name: '_UserStore.isLoading'))
+          Computed<bool>(() => super.isLoading, name: '_AuthStore.isLoading'))
       .value;
 
-  final _$successAtom = Atom(name: '_UserStore.success');
+  final _$successAtom = Atom(name: '_AuthStore.success');
 
   @override
   bool get success {
@@ -31,7 +31,7 @@ mixin _$UserStore on _UserStore, Store {
     });
   }
 
-  final _$loginFutureAtom = Atom(name: '_UserStore.loginFuture');
+  final _$loginFutureAtom = Atom(name: '_AuthStore.loginFuture');
 
   @override
   ObservableFuture<bool> get loginFuture {
@@ -46,7 +46,7 @@ mixin _$UserStore on _UserStore, Store {
     });
   }
 
-  final _$loginAsyncAction = AsyncAction('_UserStore.login');
+  final _$loginAsyncAction = AsyncAction('_AuthStore.login');
 
   @override
   Future<dynamic> login(String email, String password) {

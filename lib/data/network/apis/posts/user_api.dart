@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/data/network/dio_client.dart';
 import 'package:boilerplate/data/network/rest_client.dart';
-import 'package:boilerplate/models/post/post_list.dart';
+import 'package:boilerplate/models/post/user_list.dart';
+import 'package:flutter/material.dart';
 
-class PostApi {
+class UserAPI {
   // dio instance
   final DioClient _dioClient;
 
@@ -13,13 +14,13 @@ class PostApi {
   final RestClient _restClient;
 
   // injecting dio instance
-  PostApi(this._dioClient, this._restClient);
+  UserAPI(this._dioClient, this._restClient);
 
   /// Returns list of post in response
-  Future<PostList> getPosts() async {
+  Future<UserList> getUsers() async {
     try {
-      final res = await _dioClient.get(Endpoints.getPosts);
-      return PostList.fromJson(res);
+      final res = await _dioClient.get(Endpoints.getUsers);
+      return UserList.fromJson(res);
     } catch (e) {
       print(e.toString());
       throw e;

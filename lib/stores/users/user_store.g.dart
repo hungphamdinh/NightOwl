@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'post_store.dart';
+part of 'user_store.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,45 +8,45 @@ part of 'post_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$PostStore on _PostStore, Store {
+mixin _$UserStore on _UserStore, Store {
   Computed<bool>? _$loadingComputed;
 
   @override
   bool get loading => (_$loadingComputed ??=
-          Computed<bool>(() => super.loading, name: '_PostStore.loading'))
+          Computed<bool>(() => super.loading, name: '_UserStore.loading'))
       .value;
 
-  final _$fetchPostsFutureAtom = Atom(name: '_PostStore.fetchPostsFuture');
+  final _$fetchPostsFutureAtom = Atom(name: '_UserStore.fetchPostsFuture');
 
   @override
-  ObservableFuture<PostList?> get fetchPostsFuture {
+  ObservableFuture<UserList?> get fetchPostsFuture {
     _$fetchPostsFutureAtom.reportRead();
     return super.fetchPostsFuture;
   }
 
   @override
-  set fetchPostsFuture(ObservableFuture<PostList?> value) {
+  set fetchPostsFuture(ObservableFuture<UserList?> value) {
     _$fetchPostsFutureAtom.reportWrite(value, super.fetchPostsFuture, () {
       super.fetchPostsFuture = value;
     });
   }
 
-  final _$postListAtom = Atom(name: '_PostStore.postList');
+  final _$userListAtom = Atom(name: '_UserStore.userList');
 
   @override
-  PostList? get postList {
-    _$postListAtom.reportRead();
-    return super.postList;
+  UserList? get userList {
+    _$userListAtom.reportRead();
+    return super.userList;
   }
 
   @override
-  set postList(PostList? value) {
-    _$postListAtom.reportWrite(value, super.postList, () {
-      super.postList = value;
+  set userList(UserList? value) {
+    _$userListAtom.reportWrite(value, super.userList, () {
+      super.userList = value;
     });
   }
 
-  final _$successAtom = Atom(name: '_PostStore.success');
+  final _$successAtom = Atom(name: '_UserStore.success');
 
   @override
   bool get success {
@@ -61,18 +61,18 @@ mixin _$PostStore on _PostStore, Store {
     });
   }
 
-  final _$getPostsAsyncAction = AsyncAction('_PostStore.getPosts');
+  final _$getUsersAsyncAction = AsyncAction('_UserStore.getUsers');
 
   @override
-  Future<dynamic> getPosts() {
-    return _$getPostsAsyncAction.run(() => super.getPosts());
+  Future<dynamic> getUsers() {
+    return _$getUsersAsyncAction.run(() => super.getUsers());
   }
 
   @override
   String toString() {
     return '''
 fetchPostsFuture: ${fetchPostsFuture},
-postList: ${postList},
+postList: ${userList},
 success: ${success},
 loading: ${loading}
     ''';
