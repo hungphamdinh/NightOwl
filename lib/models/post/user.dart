@@ -1,6 +1,6 @@
 class User {
-  dynamic? googleUserId;
-  dynamic? id;
+  dynamic googleUserId;
+  dynamic id;
   String? name;
   String? mail;
   String? role;

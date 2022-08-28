@@ -1,3 +1,4 @@
+import 'package:boilerplate/models/post/user.dart';
 import 'package:boilerplate/stores/error/error_store.dart';
 import 'package:mobx/mobx.dart';
 
@@ -58,9 +59,9 @@ abstract class _AuthStore with Store {
 
   // actions:-------------------------------------------------------------------
   @action
-  Future login(String email, String password) async {
+  Future login(User data) async {
 
-    final future = _repository.login(email, password);
+    final future = _repository.login(data);
     loginFuture = ObservableFuture(future);
     await future.then((value) async {
       if (value) {

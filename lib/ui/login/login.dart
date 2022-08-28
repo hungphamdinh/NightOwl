@@ -1,23 +1,27 @@
+import 'dart:convert';
+
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/constants/assets.dart';
 import 'package:boilerplate/constants/colors.dart';
 import 'package:boilerplate/constants/language/index.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
+import 'package:boilerplate/stores/users/user_store.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:boilerplate/stores/form/form_store.dart';
 import 'package:boilerplate/stores/theme/theme_store.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
-import 'package:boilerplate/widgets/app_icon_widget.dart';
 import 'package:boilerplate/widgets/empty_app_bar_widget.dart';
 import 'package:boilerplate/widgets/progress_indicator_widget.dart';
-import 'package:boilerplate/widgets/rounded_button_widget.dart';
 import 'package:boilerplate/widgets/textfield_widget.dart';
+import 'package:boilerplate/models/post/user.dart' as UserClass;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'dart:developer';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -39,7 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
   );
   //stores:---------------------------------------------------------------------
   late ThemeStore _themeStore;
-  String userEmail = "";
+  late UserStore _userStore;
+  late dynamic googleInfo;
 
   //focus node:-----------------------------------------------------------------
   late FocusNode _passwordFocusNode;
@@ -117,23 +122,33 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildRightSide() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 24.0),
-            _buildUserIdField(),
-            _buildPasswordField(),
-            _buildForgotPasswordButton(),
-            _buildSignInButton()
-          ],
+    return Container(
+        height: double.infinity,
+        width: double.infinity,
+        // alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/login-bg.jpeg"),
+              fit: BoxFit.cover),
         ),
-      ),
-    );
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 24.0),
+                // _buildUserIdField(),
+                // _buildPasswordField(),
+                // _buildForgotPasswordButton(),
+                _buildWelcomeText(),
+                _buildSignInButton()
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget _buildUserIdField() {
@@ -208,26 +223,71 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Widget _buildWelcomeText() {
+    return Align(
+        alignment: FractionalOffset.center,
+        child: Padding(
+          padding: EdgeInsets.only(
+              top: 200, bottom: (MediaQuery.of(context).size.height / 6)),
+          child: Text(
+            AppLocalizations.of(context).translate('login_welcome'),
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium
+                ?.copyWith(fontSize: 30),
+          ),
+        ));
+  }
+
   Widget _buildSignInButton() {
-    return RoundedButtonWidget(
-      buttonText: AppLocalizations.of(context).translate('login_btn_sign_in'),
-      buttonColor: Colors.orangeAccent,
-      textColor: AppColors.text.hexToColor(),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.white,
+        onPrimary: Colors.black,
+      ),
       onPressed: () async {
-        if (_store.canLogin) {
-          DeviceUtils.hideKeyboard(context);
-          try {
-            // await _googleSignIn.signIn();
-            await signInWithGoogle();
-            _store.login();
-          } catch (error) {
-            print(error);
-          }
-          // _store.login();
-        } else {
-          _showErrorMessage('Please fill in all fields');
+        try {
+           await signInWithGoogle();
+
+          UserClass.User userInfo = new UserClass.User(
+            googleUserId: googleInfo.id,
+            id: googleInfo.id,
+            name: googleInfo.displayName,
+            mail: googleInfo.email,
+            role: '',
+            profile: googleInfo.photoUrl,
+          );
+          await _userStore.login(userInfo);
+          _store.login();
+        } catch (error) {
+          print(error);
         }
       },
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Image(
+              image: AssetImage("assets/images/google.png"),
+              height: 18.0,
+              width: 24,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 24, right: 8),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -287,7 +347,7 @@ class _LoginScreenState extends State<LoginScreen> {
       idToken: googleAuth.idToken,
     );
 
-    userEmail = googleUser.email;
+    googleInfo = googleUser;
 
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);

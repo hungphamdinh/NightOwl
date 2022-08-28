@@ -4,7 +4,8 @@ import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/data/network/dio_client.dart';
 import 'package:boilerplate/data/network/rest_client.dart';
 import 'package:boilerplate/models/post/user_list.dart';
-import 'package:flutter/material.dart';
+
+import '../../../../models/post/user.dart';
 
 class UserAPI {
   // dio instance
@@ -27,13 +28,13 @@ class UserAPI {
     }
   }
 
-/// sample api call with default rest client
-//  Future<PostsList> getPosts() {
-//
-//    return _restClient
-//        .get(Endpoints.getPosts)
-//        .then((dynamic res) => PostsList.fromJson(res))
-//        .catchError((error) => throw NetworkException(message: error));
-//  }
-
+  Future<dynamic> login(User body) async {
+    try {
+      final res = await _dioClient.post(Endpoints.login, data: body);
+      return res;
+    } catch (e) {
+      print(e.toString());
+      throw e;
+    }
+  }
 }

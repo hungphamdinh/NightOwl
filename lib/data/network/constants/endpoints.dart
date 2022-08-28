@@ -10,4 +10,5 @@ class Endpoints {
   // booking endpoints
   static String getUsers = baseUrl + 'users';
   static String getTasks = baseUrl + 'tasks';
+  static String login = baseUrl + 'login';
 }

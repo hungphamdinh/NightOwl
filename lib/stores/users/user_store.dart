@@ -1,4 +1,5 @@
 import 'package:boilerplate/data/repository.dart';
+import 'package:boilerplate/models/post/user.dart';
 import 'package:boilerplate/models/post/user_list.dart';
 import 'package:boilerplate/stores/error/error_store.dart';
 import 'package:boilerplate/utils/dio/dio_error_util.dart';
@@ -44,6 +45,17 @@ abstract class _UserStore with Store {
 
     future.then((postList) {
       this.userList = postList;
+    }).catchError((error) {
+      errorStore.errorMessage = DioErrorUtil.handleError(error);
+    });
+  }
+
+  @action
+  Future login(User data) async {
+    final future = _repository.login(data);
+
+    future.then((res) {
+      return res;
     }).catchError((error) {
       errorStore.errorMessage = DioErrorUtil.handleError(error);
     });
