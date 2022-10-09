@@ -4,6 +4,7 @@ import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/data/network/dio_client.dart';
 import 'package:boilerplate/data/network/rest_client.dart';
 import 'package:boilerplate/models/post/user_list.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../models/post/user.dart';
 
@@ -30,7 +31,8 @@ class UserAPI {
 
   Future<dynamic> login(User body) async {
     try {
-      final res = await _dioClient.post(Endpoints.login, data: body);
+      Map<String, dynamic> data = body.toMap();
+      final res = await _dioClient.post(Endpoints.login, data: data);
       return res;
     } catch (e) {
       print(e.toString());

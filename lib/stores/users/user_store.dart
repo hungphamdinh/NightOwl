@@ -1,10 +1,12 @@
 import 'package:boilerplate/data/repository.dart';
+import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/models/post/user.dart';
 import 'package:boilerplate/models/post/user_list.dart';
 import 'package:boilerplate/stores/error/error_store.dart';
 import 'package:boilerplate/utils/dio/dio_error_util.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'user_store.g.dart';
 
@@ -53,8 +55,11 @@ abstract class _UserStore with Store {
   @action
   Future login(User data) async {
     final future = _repository.login(data);
-
+    
     future.then((res) {
+      SharedPreferences.getInstance().then((prefs) {
+        prefs.setString((Preferences.user), data.toMap().toString());
+    });
       return res;
     }).catchError((error) {
       errorStore.errorMessage = DioErrorUtil.handleError(error);

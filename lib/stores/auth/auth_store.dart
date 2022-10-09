@@ -52,7 +52,7 @@ abstract class _AuthStore with Store {
   bool success = false;
 
   @observable
-  ObservableFuture<bool> loginFuture = emptyLoginResponse;
+  ObservableFuture<dynamic> loginFuture = emptyLoginResponse;
 
   @computed
   bool get isLoading => loginFuture.status == FutureStatus.pending;

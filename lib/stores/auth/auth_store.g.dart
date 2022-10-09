@@ -34,13 +34,13 @@ mixin _$AuthStore on _AuthStore, Store {
   final _$loginFutureAtom = Atom(name: '_AuthStore.loginFuture');
 
   @override
-  ObservableFuture<bool> get loginFuture {
+  ObservableFuture<dynamic> get loginFuture {
     _$loginFutureAtom.reportRead();
     return super.loginFuture;
   }
 
   @override
-  set loginFuture(ObservableFuture<bool> value) {
+  set loginFuture(ObservableFuture<dynamic> value) {
     _$loginFutureAtom.reportWrite(value, super.loginFuture, () {
       super.loginFuture = value;
     });

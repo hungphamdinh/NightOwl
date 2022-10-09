@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-import 'dart:developer';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _themeStore = Provider.of<ThemeStore>(context);
+    _userStore = Provider.of<UserStore>(context);
   }
 
   @override
@@ -72,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: _buildBody(),
     );
   }
+
 
   // body methods:--------------------------------------------------------------
   Widget _buildBody() {
@@ -247,7 +248,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       onPressed: () async {
         try {
-           await signInWithGoogle();
+          await signInWithGoogle();
 
           UserClass.User userInfo = new UserClass.User(
             googleUserId: googleInfo.id,
@@ -294,7 +295,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget navigate(BuildContext context, route) {
     SharedPreferences.getInstance().then((prefs) {
       if (route == 'login') {
-        prefs.setBool(Preferences.is_logged_in, false);
+        prefs.setBool(Preferences.is_logged_in, true);
         Future.delayed(Duration(milliseconds: 0), () {
           Navigator.of(context).pushNamedAndRemoveUntil(
               Routes.home, (Route<dynamic> route) => false);

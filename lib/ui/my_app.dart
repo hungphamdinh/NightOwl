@@ -1,7 +1,9 @@
 import 'package:boilerplate/constants/app_theme.dart';
 import 'package:boilerplate/constants/strings.dart';
+import 'package:boilerplate/data/local/provider/user_provider.dart';
 import 'package:boilerplate/data/repository.dart';
 import 'package:boilerplate/di/components/service_locator.dart';
+import 'package:boilerplate/models/post/user.dart';
 import 'package:boilerplate/stores/auth/auth_store.dart';
 import 'package:boilerplate/stores/language/language_store.dart';
 import 'package:boilerplate/stores/theme/theme_store.dart';
@@ -26,11 +28,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return MultiProvider(
       providers: [
         Provider<ThemeStore>(create: (_) => _themeStore),
         Provider<UserStore>(create: (_) => _userStore),
         Provider<LanguageStore>(create: (_) => _languageStore),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
       ],
       child: Observer(
         name: 'global-observer',

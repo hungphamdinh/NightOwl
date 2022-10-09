@@ -31,7 +31,7 @@ dependencies:
 
   # A composable, Future-based library for making HTTP requests.
   http: ^0.13.3
-
+  youtube_api: ^1.0.4
   # Flogs, a powerful logging framework
 #  f_logs: ^1.2.2
 

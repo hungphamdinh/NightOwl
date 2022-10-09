@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:boilerplate/constants/assets.dart';
+import 'package:boilerplate/data/local/provider/user_provider.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
+import 'dart:convert';
+import 'package:boilerplate/models/post/user.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:boilerplate/widgets/app_icon_widget.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +24,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Material(
       child: Center(child: AppIconWidget(image: Assets.appLogo)),
     );
@@ -37,11 +39,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (preferences.getBool(Preferences.is_logged_in) ?? false) {
       Navigator.of(context).pushReplacementNamed(Routes.home);
-    }
-    else if (preferences.getBool(Preferences.is_forgot) ?? true) {
+    } else if (preferences.getBool(Preferences.is_forgot) ?? true) {
       Navigator.of(context).pushReplacementNamed(Routes.forgot);
-    } 
-    else {
+    } else {
       Navigator.of(context).pushReplacementNamed(Routes.login);
     }
   }

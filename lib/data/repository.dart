@@ -4,6 +4,7 @@ import 'package:boilerplate/data/local/datasources/user/user_datasource.dart';
 import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
 import 'package:boilerplate/models/post/user.dart';
 import 'package:boilerplate/models/post/user_list.dart';
+import 'package:flutter/material.dart';
 import 'package:sembast/sembast.dart';
 
 import 'local/constants/db_constants.dart';
@@ -67,7 +68,7 @@ class Repository {
       .catchError((error) => throw error);
 
   // Login:---------------------------------------------------------------------
-  Future<bool> login(User data) async {
+  Future login(User data) async {
     // return await Future.delayed(Duration(seconds: 2), ()=> true);
     return await _userAPI.login(data).then((res) {
       return res;
